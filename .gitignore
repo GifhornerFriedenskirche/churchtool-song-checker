@@ -2,4 +2,4 @@
 .env
 
 # Ignore output file
-output.md
+*output.md

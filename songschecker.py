@@ -10,6 +10,16 @@ AUTH_TOKEN = os.getenv("AUTH_TOKEN")
 API_URL = os.getenv("API_URL")
 
 def get_json_data_from_api(api_url, headers):
+    """
+    Fetches JSON data from the API.
+
+    Parameters:
+    api_url (str): The URL of the API.
+    headers (dict): The headers to be used in the API request.
+
+    Returns:
+    dict: A dictionary containing all data fetched from the API.
+    """
     all_data = []
     page = 1
     while True:
@@ -27,6 +37,15 @@ def get_json_data_from_api(api_url, headers):
     return {'data': all_data}
 
 def count_sng_files(arrangements):
+    """
+    Counts the number of .sng files in each arrangement.
+
+    Parameters:
+    arrangements (list): A list of arrangements.
+
+    Returns:
+    dict: A dictionary with arrangement names as keys and counts as values.
+    """
     sng_counts = {}
     for arrangement in arrangements:
         sng_count = sum(1 for file in arrangement['files'] if file['name'].endswith('.sng'))
@@ -34,6 +53,13 @@ def count_sng_files(arrangements):
     return sng_counts
 
 def write_songs_with_sng_counts_to_file(json_data, output_file):
+    """
+    Writes songs with .sng counts to a file.
+
+    Parameters:
+    json_data (dict): A dictionary containing song data.
+    output_file (str): The name of the file to write to.
+    """
     malicious_songs = []
     clean_songs = []
     
@@ -61,15 +87,23 @@ def write_songs_with_sng_counts_to_file(json_data, output_file):
             file.write(song + '\n')
 
 def main():
+    """
+    The main function that orchestrates the fetching of data from the API, 
+    processing the data and writing the results to a file.
+    """
     headers = {
         "Authorization": f"Login {AUTH_TOKEN}",  # Using "Login" instead of "Bearer"
         "Content-Type": "application/json"
     }
-    output_file = "output.md"  # Output file with markdown extension
+    output_file = "songschecker-output.md"  # Output file with markdown extension
     json_data = get_json_data_from_api(API_URL, headers)
     if json_data:
         write_songs_with_sng_counts_to_file(json_data, output_file)
         print(f"Results written to {output_file}")
 
 if __name__ == "__main__":
+    """
+    This condition checks if this script is being run directly or being imported. 
+    If it is run directly, it calls the main function.
+    """
     main()
