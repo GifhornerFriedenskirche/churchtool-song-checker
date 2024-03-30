@@ -1,6 +1,6 @@
 import requests
 
-def get_tokens_and_cookie(user_name, user_password,api_url):
+def get_tokens_and_cookie(user_name, user_password, api_url):
   """
   Retrieves authentication tokens and cookie for API access.
 
@@ -24,7 +24,7 @@ def get_tokens_and_cookie(user_name, user_password,api_url):
   person_id = response.json().get("data").get("personId")
 
   # Get csrf-token
-  csrf_token_url = f"{API_URL}/api/csrftoken"
+  csrf_token_url = f"{api_url}/api/csrftoken"
 
   response = requests.get(csrf_token_url, cookies=cookie, headers=headers)
   response.raise_for_status()
@@ -34,7 +34,7 @@ def get_tokens_and_cookie(user_name, user_password,api_url):
   headers["X-CSRFToken"] = csrf_token
 
   # Get login-token
-  login_token_url = f"{API_URL}/api/persons/{person_id}/logintoken"
+  login_token_url = f"{api_url}/api/persons/{person_id}/logintoken"
   response = requests.get(login_token_url, cookies=cookie, headers=headers)
   response.raise_for_status()
   login_token = response.json().get("data")
