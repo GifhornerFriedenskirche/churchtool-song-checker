@@ -4,13 +4,6 @@ from dotenv import load_dotenv
 from wikiupdate import updateWiki
 from getCredentials import *
 
-# Get environment variables
-API_URL = os.getenv("API_URL")
-CATEGORIE = os.getenv("CATEGORIE")
-PAGE_TITLE = os.getenv("PAGE_TITLE")
-USER_NAME = os.getenv("USER_NAME")
-USER_PASSWORD = os.getenv("USER_PASSWORD")
-
 def get_song_data(api_url, headers, cookies):
     """
     Fetches song data from the API. Configured User needs view rights to songs.
@@ -99,6 +92,13 @@ def main():
     """
     # Load environment variables from .env file
     load_dotenv()
+
+    # Get environment variables
+    API_URL = os.getenv("API_URL")
+    CATEGORIE = os.getenv("CATEGORIE")
+    PAGE_TITLE = os.getenv("PAGE_TITLE")
+    USER_NAME = os.getenv("USER_NAME")
+    USER_PASSWORD = os.getenv("USER_PASSWORD")
 
     headers, cookies = get_tokens_and_cookie(USER_NAME, USER_PASSWORD, API_URL)
 
