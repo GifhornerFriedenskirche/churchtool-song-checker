@@ -11,6 +11,9 @@ load_dotenv()
 API_URL = os.getenv("API_URL")
 CATEGORIE = os.getenv("CATEGORIE")
 PAGE_TITLE = os.getenv("PAGE_TITLE")
+USER_NAME = os.getenv("USER_NAME")
+USER_PASSWORD = os.getenv("USER_PASSWORD")
+
 
 def get_song_data(api_url, headers, cookies):
     """
@@ -98,7 +101,7 @@ def main():
     """
     The main function that executes the script.
     """
-    headers, cookies = get_tokens_and_cookie()
+    headers, cookies = get_tokens_and_cookie(USER_NAME, USER_PASSWORD, API_URL)
 
     json_data = get_song_data(API_URL, headers, cookies)
     if json_data:
