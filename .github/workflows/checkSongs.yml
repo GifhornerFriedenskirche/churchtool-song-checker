@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
       - name: set up environment variables
-        run: echo "API_URL=${{ secrets.API_URL }}" >> .env && echo "USER_NAME=${{ secrets.USER_NAME }}" >> .env && echo "USER_PASSWORD=${{ prod.secrets.USER_PASSWORD }}" >> .env && echo "CATEGORIE=${{ prod.variables.CATEGORIE }}" >> .env && echo "PAGE_TITLE=${{ prod.secrets.PAGE_TITLE }}" >> .env
+        run: touch .env && echo "API_URL=${{ secrets.API_URL }}" >> .env && echo "USER_NAME=${{ secrets.USER_NAME }}" >> .env && echo "USER_PASSWORD=${{ secrets.USER_PASSWORD }}" >> .env && echo "CATEGORY=${{ env.CATEGORY }}" >> .env && echo "PAGE_TITLE=${{ env.PAGE_TITLE }}" >> .env
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
