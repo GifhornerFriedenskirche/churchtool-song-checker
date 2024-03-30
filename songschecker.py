@@ -95,7 +95,7 @@ def main():
 
     # Get environment variables
     API_URL = os.getenv("API_URL")
-    CATEGORIE = os.getenv("CATEGORIE")
+    CATEGORY = os.getenv("CATEGORY")
     PAGE_TITLE = os.getenv("PAGE_TITLE")
     USER_NAME = os.getenv("USER_NAME")
     USER_PASSWORD = os.getenv("USER_PASSWORD")
@@ -105,7 +105,7 @@ def main():
     json_data = get_song_data(API_URL, headers, cookies)
     if json_data:
         content = check_for_missing_sng_file(json_data)
-        print(updateWiki(CATEGORIE, PAGE_TITLE, content, USER_NAME, USER_PASSWORD, API_URL))
+        print(updateWiki(CATEGORY, PAGE_TITLE, content, USER_NAME, USER_PASSWORD, API_URL))
 
 if __name__ == "__main__":
     main()

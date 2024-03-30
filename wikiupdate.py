@@ -1,7 +1,7 @@
 import requests
 from getCredentials import *
 
-def updateWiki(categorie, page_title, content, user_name, user_password ,api_url):
+def updateWiki(category, page_title, content, user_name, user_password ,api_url):
   """
   Update a wiki page with the specified category, page title, and content.
 
@@ -17,7 +17,7 @@ def updateWiki(categorie, page_title, content, user_name, user_password ,api_url
   headers, cookie = get_tokens_and_cookie(user_name, user_password ,api_url)
 
   # Get identifier
-  identifier_url = f"{api_url}/api/wiki/categories/{categorie}/pages/{page_title}/versions"
+  identifier_url = f"{api_url}/api/wiki/categories/{category}/pages/{page_title}/versions"
 
   response = requests.get(identifier_url, headers=headers, cookies=cookie)
   response.raise_for_status()
@@ -28,7 +28,7 @@ def updateWiki(categorie, page_title, content, user_name, user_password ,api_url
   update_url = f"{api_url}/?q=churchwiki/ajax"
   update_data = {
     "doc_id": page_title,
-    "wikicategory_id": categorie,
+    "wikicategory_id": category,
     "val": content,
     "auf_startseite_yn": False,
     "identifier": identifier,
