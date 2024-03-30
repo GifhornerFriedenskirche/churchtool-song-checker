@@ -106,7 +106,7 @@ def main():
     json_data = get_song_data(API_URL, headers, cookies)
     if json_data:
         content = check_for_missing_sng_file(json_data)
-        print(updateWiki(CATEGORIE, PAGE_TITLE, content, user_name, user_password ,api_url))
+        print(updateWiki(CATEGORIE, PAGE_TITLE, content, USER_NAME, USER_PASSWORD, API_URL))
 
 if __name__ == "__main__":
     main()
