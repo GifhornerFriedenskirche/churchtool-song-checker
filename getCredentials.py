@@ -1,11 +1,6 @@
-import os
 import requests
 
-USER_NAME = os.getenv("USER_NAME")
-USER_PASSWORD = os.getenv("USER_PASSWORD")
-API_URL = os.getenv("API_URL")
-
-def get_tokens_and_cookie():
+def get_tokens_and_cookie(user_name, user_password,api_url):
   """
   Retrieves authentication tokens and cookie for API access.
 
@@ -13,10 +8,10 @@ def get_tokens_and_cookie():
     tuple: A tuple containing the headers and cookie for API authentication.
   """
   # Login via API
-  login_url = f"{API_URL}/api/login"
+  login_url = f"{api_url}/api/login"
   login_data = {
-    "username": USER_NAME,
-    "password": USER_PASSWORD
+    "username": user_name,
+    "password": user_password
   }
   headers = {
     "Content-Type": "application/json"
