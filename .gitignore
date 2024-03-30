@@ -2,4 +2,10 @@
 .env
 
 # Ignore output file
-output.md
+*output.md
+
+# Ignore pycache
+__pycache__/
+
+# Ignore .vscode
+.vscode/
