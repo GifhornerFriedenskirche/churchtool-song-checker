@@ -1,0 +1,36 @@
+---
+name: check songs 🎶 and update status page 📖
+on:
+  workflow_dispatch:
+    inputs:
+      status:
+        description: 'Status of the check'
+        required: true
+        default: 'Checking songs'
+  schedule:
+    - cron: '0 18 * * 5' # Run every Friday at 6 PM CST
+jobs:
+  check_songs:
+    runs-on: ubuntu-latest
+    environment: prod
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Create .env file
+        run: |
+          touch .env
+          echo "API_URL=${{ secrets.API_URL }}" >> .env
+          echo "USER_NAME=${{ secrets.USER_NAME }}" >> .env
+          echo "USER_PASSWORD=${{ secrets.USER_PASSWORD }}" >> .env
+          echo "CATEGORY=${{ vars.CATEGORY }}" >> .env
+          echo "PAGE_TITLE=${{ vars.PAGE_TITLE }}" >> .env
+      - name: Run script
+        run: python songschecker.py

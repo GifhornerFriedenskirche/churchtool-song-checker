@@ -1,30 +1,26 @@
 import os
 import requests
 from dotenv import load_dotenv
+from wikiupdate import updateWiki
+from getCredentials import *
 
-# Load environment variables from .env file
-load_dotenv()
-
-# Get environment variables
-AUTH_TOKEN = os.getenv("AUTH_TOKEN")
-API_URL = os.getenv("API_URL")
-
-def get_json_data_from_api(api_url, headers):
+def get_song_data(api_url, headers, cookies):
     """
-    Fetches JSON data from the API.
+    Fetches song data from the API. Configured User needs view rights to songs.
 
-    Parameters:
-    api_url (str): The URL of the API.
-    headers (dict): The headers to be used in the API request.
+    Args:
+        api_url (str): The URL of the API.
+        headers (dict): The headers for the API request.
+        cookies (dict): The cookies for the API request.
 
     Returns:
-    dict: A dictionary containing all data fetched from the API.
+        dict: The song data in JSON format.
     """
     all_data = []
     page = 1
     while True:
         params = {'page': page}
-        response = requests.get(api_url+'/api/songs?limit=200', headers=headers, params=params)
+        response = requests.get(api_url+'/api/songs?limit=200', headers=headers, params=params, cookies=cookies)
         if response.status_code == 200:
             data = response.json()
             all_data.extend(data['data'])
@@ -40,11 +36,11 @@ def count_sng_files(arrangements):
     """
     Counts the number of .sng files in each arrangement.
 
-    Parameters:
-    arrangements (list): A list of arrangements.
+    Args:
+        arrangements (list): The list of song arrangements.
 
     Returns:
-    dict: A dictionary with arrangement names as keys and counts as values.
+        dict: A dictionary with arrangement names as keys and the count of .sng files as values.
     """
     sng_counts = {}
     for arrangement in arrangements:
@@ -52,13 +48,15 @@ def count_sng_files(arrangements):
         sng_counts[arrangement['name']] = sng_count
     return sng_counts
 
-def write_songs_with_sng_counts_to_file(json_data, output_file):
+def check_for_missing_sng_file(json_data):
     """
-    Writes songs with .sng counts to a file.
+    Checks for songs with missing .sng files.
 
-    Parameters:
-    json_data (dict): A dictionary containing song data.
-    output_file (str): The name of the file to write to.
+    Args:
+        json_data (dict): The song data in JSON format.
+
+    Returns:
+        str: The report content with information about malicious and clean songs.
     """
     malicious_songs = []
     clean_songs = []
@@ -77,29 +75,37 @@ def write_songs_with_sng_counts_to_file(json_data, output_file):
         else:
             clean_songs.append(song_info + arrangement_info)
     
-    with open(output_file, 'w') as file:
-        file.write("# Malicious Songs\n\n")
-        for song in malicious_songs:
-            file.write(song + '\n')
+    content = "# General Info\n\nThis is an automated report based on [songchecker](https://github.com/GifhornerFriedenskirche/churchtoolScripts)\n\nCurrently implemented features\n\n* Check for missing SNG files\n\n"
+    content += "# Malicious Songs\n\n"
+    for song in malicious_songs:
+        content += song + '\n'
         
-        file.write("\n# Clean Songs\n\n")
-        for song in clean_songs:
-            file.write(song + '\n')
+    content += "\n# Clean Songs\n\n"
+    for song in clean_songs:
+        content += song + '\n'
+    
+    return content
 
 def main():
     """
-    The main function that orchestrates the fetching of data from the API, 
-    processing the data and writing the results to a file.
+    The main function that executes the script.
     """
-    headers = {
-        "Authorization": f"Login {AUTH_TOKEN}",  # Using "Login" instead of "Bearer"
-        "Content-Type": "application/json"
-    }
-    output_file = "songschecker-output.md"  # Output file with markdown extension
-    json_data = get_json_data_from_api(API_URL, headers)
+    # Load environment variables from .env file
+    load_dotenv()
+
+    # Get environment variables
+    API_URL = os.getenv("API_URL")
+    CATEGORY = os.getenv("CATEGORY")
+    PAGE_TITLE = os.getenv("PAGE_TITLE")
+    USER_NAME = os.getenv("USER_NAME")
+    USER_PASSWORD = os.getenv("USER_PASSWORD")
+
+    headers, cookies = get_tokens_and_cookie(USER_NAME, USER_PASSWORD, API_URL)
+
+    json_data = get_song_data(API_URL, headers, cookies)
     if json_data:
-        write_songs_with_sng_counts_to_file(json_data, output_file)
-        print(f"Results written to {output_file}")
+        content = check_for_missing_sng_file(json_data)
+        print(updateWiki(CATEGORY, PAGE_TITLE, content, USER_NAME, USER_PASSWORD, API_URL))
 
 if __name__ == "__main__":
     """

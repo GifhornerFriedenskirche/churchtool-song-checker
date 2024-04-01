@@ -3,3 +3,9 @@
 
 # Ignore output file
 *output.md
+
+# Ignore pycache
+__pycache__/
+
+# Ignore .vscode
+.vscode/
