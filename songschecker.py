@@ -75,7 +75,7 @@ def check_for_missing_sng_file(json_data):
         else:
             clean_songs.append(song_info + arrangement_info)
     
-    content = "# General Info\n\nThis is an automated report based on [songchecker](https://github.com/GifhornerFriedenskirche/churchtoolScripts)\n\nCurrently implemented features\n\n* Check for missing SNG files\n\n"
+    content = "# General Info\n\nThis is an automated report based on [songchecker](https://github.com/GifhornerFriedenskirche/churchtoolScripts)\nCurrent run status: [![check songs 🎶 and update status page 📖](https://github.com/GifhornerFriedenskirche/churchtoolScripts/actions/workflows/checkSongs.yml/badge.svg)](https://github.com/GifhornerFriedenskirche/churchtoolScripts/actions/workflows/checkSongs.yml)\n\nCurrently implemented features\n\n* Check for missing SNG files\n\n"
     content += "# Malicious Songs\n\n"
     for song in malicious_songs:
         content += song + '\n'
