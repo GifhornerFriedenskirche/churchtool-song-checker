@@ -1,7 +1,8 @@
 import os
 import requests
+import datetime
 from dotenv import load_dotenv
-from wikiupdate import updateWiki
+from wikiUpdate import updateWiki
 from getCredentials import *
 
 def get_song_data(api_url, headers, cookies):
@@ -75,7 +76,8 @@ def check_for_missing_sng_file(json_data):
         else:
             clean_songs.append(song_info + arrangement_info)
     
-    content = "# General Info\n\nThis is an automated report based on [songchecker](https://github.com/GifhornerFriedenskirche/churchtoolScripts)\nCurrent run status: [![check songs 🎶 and update status page 📖](https://github.com/GifhornerFriedenskirche/churchtoolScripts/actions/workflows/checkSongs.yml/badge.svg)](https://github.com/GifhornerFriedenskirche/churchtoolScripts/actions/workflows/checkSongs.yml)\n\nCurrently implemented features\n\n* Check for missing SNG files\n\n"
+    now = datetime.datetime.now().strftime('%d.%m.%y %H:%M:%S')
+    content = f"# General Info\n\nThis is an automated report based on [songchecker](https://github.com/GifhornerFriedenskirche/churchtoolScripts)\nStatus of last run (date: {now}): [![check songs 🎶 and update status page 📖](https://github.com/GifhornerFriedenskirche/churchtoolScripts/actions/workflows/checkSongs.yml/badge.svg)](https://github.com/GifhornerFriedenskirche/churchtoolScripts/actions/workflows/checkSongs.yml)\n\nCurrently implemented features\n\n* Check for missing SNG files\n\n"
     content += "# Malicious Songs\n\n"
     for song in malicious_songs:
         content += song + '\n'
