@@ -101,6 +101,8 @@ def main():
     PAGE_TITLE = os.getenv("PAGE_TITLE")
     USER_NAME = os.getenv("USER_NAME")
     USER_PASSWORD = os.getenv("USER_PASSWORD")
+    TAG_MISSING_SNG = os.getenv("TAG_MISSING_SNG")
+    TAG_LICENCE_CHECK = os.getenv("TAG_LICENCE_CHECK")
 
     headers, cookies = get_tokens_and_cookie(USER_NAME, USER_PASSWORD, API_URL)
 
