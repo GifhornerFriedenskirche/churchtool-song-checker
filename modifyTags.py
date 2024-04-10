@@ -1,6 +1,5 @@
 import requests
 import os
-import dotenv
 from getCredentials import *
 
 def get_tag_id(api_url, cookies, headers, tag_name, type='songs'):
@@ -97,15 +96,15 @@ def add_tag_to_song(api_url, cookies, headers, song_id, tag_id, type='songs'):
     return response.status_code
 
 
-def remove_tag_from_song(api_url, cookies, headers, song_id, tag_id, type='songs'):
+def remove_tag(api_url, cookies, headers, id, tag_id, type='songs'):
   """
-  Removes a tag from a song.
+  Removes a tag from a song or a person.
 
   Parameters:
   - api_url (str): The URL of the API.
   - cookies (dict): The cookies to be sent with the request.
   - headers (dict): The headers to be sent with the request.
-  - song_id (str): The ID of the song to remove the tag from.
+  - id (str): The ID of the song or the person to remove the tag from.
   - tag_id (str): The ID of the tag to remove from the song.
   - type (str, optional): The type of the tag. Can be 'songs' or 'persons'. Defaults to 'songs'.
 
@@ -122,8 +121,23 @@ def remove_tag_from_song(api_url, cookies, headers, song_id, tag_id, type='songs
   
   remove_data = {
     'func': func,
-    'id': song_id,
+    'id': id,
     'tag_id': tag_id
   }
   response = requests.post(remove_url,cookies=cookies,headers=headers,json=remove_data)
   return response
+
+def delete_tag(api_url, cookies, headers, tag_id, type='songs'):
+  """
+  WIP: Deletes a tag from the database.
+  """
+  remove_url = f"{api_url}/?q=churchservice/ajax"
+  
+  remove_data = {
+    'func': 'removeTag',
+    'id': tag_id,
+    'type': type
+  }
+  #response = requests.post(remove_url,cookies=cookies,headers=headers,json=remove_data)
+  #return response
+  return 'WIP: Delete tag function is not yet implemented.'

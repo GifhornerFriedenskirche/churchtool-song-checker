@@ -3,6 +3,7 @@ import requests
 import datetime
 from dotenv import load_dotenv
 from wikiUpdate import updateWiki
+from modifyTags import *
 from getCredentials import *
 
 def get_song_data(api_url, headers, cookies):
@@ -73,20 +74,22 @@ def check_for_missing_sng_file(json_data):
         
         if has_missing_sng:
             malicious_songs.append(song_info + arrangement_info)
+            song['has_sng_file'] = False
         else:
             clean_songs.append(song_info + arrangement_info)
+            song['has_sng_file'] = True
     
     now = datetime.datetime.now().strftime('%d.%m.%y %H:%M:%S')
-    content = f"# General Info\n\nThis is an automated report based on [songchecker](https://github.com/GifhornerFriedenskirche/churchtoolScripts)\nStatus of last run (date: {now}): [![check songs 🎶 and update status page 📖](https://github.com/GifhornerFriedenskirche/churchtoolScripts/actions/workflows/checkSongs.yml/badge.svg)](https://github.com/GifhornerFriedenskirche/churchtoolScripts/actions/workflows/checkSongs.yml)\n\nCurrently implemented features\n\n* Check for missing SNG files\n\n"
-    content += "# Malicious Songs\n\n"
+    wiki_content = f"# General Info\n\nThis is an automated report based on [songchecker](https://github.com/GifhornerFriedenskirche/churchtoolScripts)\nStatus of last run (date: {now}): [![check songs 🎶 and update status page 📖](https://github.com/GifhornerFriedenskirche/churchtoolScripts/actions/workflows/checkSongs.yml/badge.svg)](https://github.com/GifhornerFriedenskirche/churchtoolScripts/actions/workflows/checkSongs.yml)\n\nCurrently implemented features\n\n* Check for missing SNG files\n\n"
+    wiki_content += "# Malicious Songs\n\n"
     for song in malicious_songs:
-        content += song + '\n'
+        wiki_content += song + '\n'
         
-    content += "\n# Clean Songs\n\n"
+    wiki_content += "\n# Clean Songs\n\n"
     for song in clean_songs:
-        content += song + '\n'
+        wiki_content += song + '\n'
     
-    return content
+    return wiki_content, json_data
 
 def main():
     """
@@ -103,13 +106,39 @@ def main():
     USER_PASSWORD = os.getenv("USER_PASSWORD")
     TAG_MISSING_SNG = os.getenv("TAG_MISSING_SNG")
     TAG_LICENCE_CHECK = os.getenv("TAG_LICENCE_CHECK")
+    UPDATE_WIKI = os.getenv("UPDATE_WIKI")
+    MODIFY_TAGS = os.getenv("MODIFY_TAGS")
 
+    # Get tokens and cookie
     headers, cookies = get_tokens_and_cookie(USER_NAME, USER_PASSWORD, API_URL)
 
+    # Get song data
     json_data = get_song_data(API_URL, headers, cookies)
     if json_data:
+    
+        # Check for missing .sng files
         content = check_for_missing_sng_file(json_data)
-        print(updateWiki(CATEGORY, PAGE_TITLE, content, USER_NAME, USER_PASSWORD, API_URL))
+    
+        # Update wiki page if activated
+        if UPDATE_WIKI == 'True':
+            # Todo: check if a page with the title exists
+            # Todo: create page if not exists
+
+            print(updateWiki(CATEGORY, PAGE_TITLE, content, USER_NAME, USER_PASSWORD, API_URL))
+
+        # Modify tags if activated
+        if MODIFY_TAGS == 'True':
+            # Handle tags for missing SNG files
+            TAG_ID_MISSING_SNG = get_tag_id(API_URL, cookies, headers, TAG_MISSING_SNG)
+            if TAG_ID_MISSING_SNG == None:
+                TAG_ID_MISSING_SNG = create_tag(API_URL, cookies, headers, TAG_MISSING_SNG, type='songs')
+            for songs in json_data['data']:
+                if songs['has_sng_file'] == False:
+                    add_tag_to_song(API_URL, cookies, headers, songs['id'], TAG_ID_MISSING_SNG, 'songs')
+                else:
+                    # Add check for tag and only remove it if it exists - [blocked by API](https://forum.church.tools/topic/7726/song-schema-attribut-f%C3%BCr-tags-fehlen)
+                    remove_tag(API_URL, cookies, headers, songs['id'], TAG_ID_MISSING_SNG, 'songs')
+    
 
 if __name__ == "__main__":
     """
