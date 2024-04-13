@@ -127,7 +127,7 @@ def main():
             # Todo: check if a page with the title exists
             # Todo: create page if not exists
 
-            print(f"updateWiki(CATEGORY, PAGE_TITLE, content, USER_NAME, USER_PASSWORD, API_URL)
+            print(f"Update wiki page {PAGE_TITLE} at category {CATEGORY} with result: {updateWiki(CATEGORY, PAGE_TITLE, content, USER_NAME, USER_PASSWORD, API_URL)}")
         else :
             print("Wiki update is disabled")
 
