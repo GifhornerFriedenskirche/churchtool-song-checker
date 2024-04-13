@@ -30,7 +30,11 @@ jobs:
           echo "API_URL=${{ secrets.API_URL }}" >> .env
           echo "USER_NAME=${{ secrets.USER_NAME }}" >> .env
           echo "USER_PASSWORD=${{ secrets.USER_PASSWORD }}" >> .env
+          echo "UPDATE_WIKI=${{ vars.UPDATE_WIKI }}" >> .env
           echo "CATEGORY=${{ vars.CATEGORY }}" >> .env
           echo "PAGE_TITLE=${{ vars.PAGE_TITLE }}" >> .env
+          echo "MODIFY_TAGS=${{ vars.MODIFY_TAGS }}" >> .env
+          echo "TAG_MISSING_SNG=${{ vars.TAG_MISSING_SNG }}" >> .env
+          echo "TAG_LICENCE_CHECK=${{ vars.TAG_LICENCE_CHECK }}" >> .env
       - name: Run script
         run: python songschecker.py
