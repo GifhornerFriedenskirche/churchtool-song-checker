@@ -3,9 +3,11 @@
 
 # Ignore output file
 *output.md
+output*json
 
 # Ignore pycache
 __pycache__/
 
 # Ignore .vscode
 .vscode/
+.dev-runner.py
