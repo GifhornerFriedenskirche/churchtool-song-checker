@@ -3,7 +3,7 @@ from setuptools import setup
 # setup.py file for the package
 setup(
   name='churchtools-song-checker',
-  version='1.0.0',
+  version='1.1.0',
   packages=['ct-song-checker'],
   python_requires='>3.9.1',
   install_requires=[

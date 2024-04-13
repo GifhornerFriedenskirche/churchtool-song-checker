@@ -1,3 +1,13 @@
+# This Module is used to modify tags in the database. It contains functions to get the ID of a tag, create a new tag, add a tag to a song, and remove a tag from a song. The functions in this module are used in the main script to delete a tag from the database. The functions in this module are as follows:
+#
+# get_tag_id(api_url, cookies, headers, tag_name, type='songs'): This function retrieves the ID of a tag with the given name from the specified API endpoint. It takes the API URL, cookies, headers, tag name, and type as parameters and returns the ID of the tag if found, None otherwise.
+# create_tag(api_url, cookies, headers, tag_name, type='songs'): This function creates a new tag with the specified name and type. It takes the API URL, cookies, headers, tag name, and type as parameters and returns the ID of the created tag, or None if the tag creation failed.
+# add_tag_to_song(api_url, cookies, headers, song_id, tag_id, type='songs'): This function adds a tag to a song. It takes the API URL, cookies, headers, song ID, tag ID, and type as parameters and returns the response of the request.
+# remove_tag(api_url, cookies, headers, id, tag_id, type='songs'): This function removes a tag from a song or a person. It takes the API URL, cookies, headers, ID of the song or the person, tag ID, and type as parameters and returns the response of the request.
+#
+# Currently it is not supported to manually delete a Tag. The common behavior is to remove all associations with the tag and then the tag will be deleted automatically at the next cron job run. This is done to prevent orphaned tags in the database.
+# souce: https://forum.church.tools/post/46228
+
 import requests
 import os
 from getCredentials import *
@@ -126,18 +136,3 @@ def remove_tag(api_url, cookies, headers, id, tag_id, type='songs'):
   }
   response = requests.post(remove_url,cookies=cookies,headers=headers,json=remove_data)
   return response
-
-def delete_tag(api_url, cookies, headers, tag_id, type='songs'):
-  """
-  WIP: Deletes a tag from the database.
-  """
-  remove_url = f"{api_url}/?q=churchservice/ajax"
-  
-  remove_data = {
-    'func': 'removeTag',
-    'id': tag_id,
-    'type': type
-  }
-  #response = requests.post(remove_url,cookies=cookies,headers=headers,json=remove_data)
-  #return response
-  return 'WIP: Delete tag function is not yet implemented.'

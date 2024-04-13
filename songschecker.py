@@ -115,29 +115,38 @@ def main():
     # Get song data
     json_data = get_song_data(API_URL, headers, cookies)
     if json_data:
-    
+        print(f"Successfully fetched {len(json_data['data'])} songs from the API")
+
         # Check for missing .sng files
         content = check_for_missing_sng_file(json_data)
+        print("Checked for missing .sng files")
     
         # Update wiki page if activated
         if UPDATE_WIKI == 'True':
+            print("Wiki update is enabled")
             # Todo: check if a page with the title exists
             # Todo: create page if not exists
 
-            print(updateWiki(CATEGORY, PAGE_TITLE, content, USER_NAME, USER_PASSWORD, API_URL))
+            print(f"updateWiki(CATEGORY, PAGE_TITLE, content, USER_NAME, USER_PASSWORD, API_URL)
+        else :
+            print("Wiki update is disabled")
 
         # Modify tags if activated
         if MODIFY_TAGS == 'True':
+            print("Tag modification is enabled")
             # Handle tags for missing SNG files
             TAG_ID_MISSING_SNG = get_tag_id(API_URL, cookies, headers, TAG_MISSING_SNG)
             if TAG_ID_MISSING_SNG == None:
-                TAG_ID_MISSING_SNG = create_tag(API_URL, cookies, headers, TAG_MISSING_SNG, type='songs')
+                print(f"Tag `{TAG_MISSING_SNG}` was added with ID:{TAG_ID_MISSING_SNG = create_tag(API_URL, cookies, headers, TAG_MISSING_SNG, type='songs')}")
             for songs in json_data['data']:
                 if songs['has_sng_file'] == False:
                     add_tag_to_song(API_URL, cookies, headers, songs['id'], TAG_ID_MISSING_SNG, 'songs')
                 else:
-                    # Add check for tag and only remove it if it exists - [blocked by API](https://forum.church.tools/topic/7726/song-schema-attribut-f%C3%BCr-tags-fehlen)
+                    # ToDo: Add check for tag and only remove it if it exists - [blocked by API](https://forum.church.tools/topic/7726/song-schema-attribut-f%C3%BCr-tags-fehlen)
                     remove_tag(API_URL, cookies, headers, songs['id'], TAG_ID_MISSING_SNG, 'songs')
+            print
+        else:
+            print("Tag modification is disabled")
     
 
 if __name__ == "__main__":

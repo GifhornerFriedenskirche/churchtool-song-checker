@@ -10,6 +10,7 @@ Before running the script, make sure you have the following prerequisites instal
 - Python 3.x
 - `requests` library
 - `python-dotenv` library
+- `dotenv` library
 
 ## Installation
 
