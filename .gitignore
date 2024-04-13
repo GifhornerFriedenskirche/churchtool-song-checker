@@ -10,3 +10,4 @@ __pycache__/
 
 # Ignore .vscode
 .vscode/
+.dev-runner.py
