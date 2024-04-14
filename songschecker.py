@@ -67,7 +67,7 @@ def check_for_missing_sng_file(json_data):
         arrangement_counts = count_sng_files(song['arrangements'])
         has_missing_sng = any(count == 0 for count in arrangement_counts.values())
         
-        song_info = f"Song: {song['name']}\n"
+        song_info = f"## {song['name']} - ID: [{song['id']}](https://friedenskirche-gf.church.tools/?q=churchservice#SongView/searchEntry:%23{song['id']}/)\n"
         arrangement_info = ""
         for arrangement, count in arrangement_counts.items():
             arrangement_info += f"- {arrangement}: {count} .sng file(s)\n"
@@ -118,7 +118,7 @@ def main():
         print(f"Successfully fetched {len(json_data['data'])} songs from the API")
 
         # Check for missing .sng files
-        content = check_for_missing_sng_file(json_data)
+        content, json_data = check_for_missing_sng_file(json_data)
         print("Checked for missing .sng files")
     
         # Update wiki page if activated
@@ -127,7 +127,7 @@ def main():
             # Todo: check if a page with the title exists
             # Todo: create page if not exists
 
-            print(f"Update wiki page {PAGE_TITLE} at category {CATEGORY} with result: {updateWiki(CATEGORY, PAGE_TITLE, content, USER_NAME, USER_PASSWORD, API_URL)}")
+            print(f"Update wiki page {PAGE_TITLE} at category {CATEGORY} with result: {updateWiki(CATEGORY, PAGE_TITLE, content, API_URL, headers, cookies)}")
         else :
             print("Wiki update is disabled")
 

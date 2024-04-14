@@ -1,25 +1,25 @@
 import requests
 from getCredentials import *
 
-def updateWiki(category, page_title, content, user_name, user_password ,api_url):
+def updateWiki(category, page_title, content, api_url, headers, cookies):
   """
-  Update a wiki page with the specified category, page title, and content.
+  Updates a wiki page with the specified category, page title, and content.
 
   Args:
-    categorie (str): The category of the wiki page.
+    category (str): The category of the wiki page.
     page_title (str): The title of the wiki page.
-    content (str): The content in markdown to update the wiki page with.
+    content (str): The content to update the wiki page with.
+    api_url (str): The URL of the API.
+    headers (dict): The headers to include in the API request.
+    cookies (dict): The cookies to include in the API request.
 
   Returns:
     str: A message indicating whether the update was successful or failed.
   """
-  # Get authentication data
-  headers, cookie = get_tokens_and_cookie(user_name, user_password ,api_url)
-
   # Get identifier
   identifier_url = f"{api_url}/api/wiki/categories/{category}/pages/{page_title}/versions"
 
-  response = requests.get(identifier_url, headers=headers, cookies=cookie)
+  response = requests.get(identifier_url, headers=headers, cookies=cookies)
   response.raise_for_status()
 
   identifier = response.json().get("data")[0].get("identifier")
@@ -39,7 +39,7 @@ def updateWiki(category, page_title, content, user_name, user_password ,api_url)
   params = {
     "func": "save"
   }
-  response = requests.post(update_url, json=update_data, headers=headers, params=params, cookies=cookie)
+  response = requests.post(update_url, json=update_data, headers=headers, params=params, cookies=cookies)
   response.raise_for_status()
 
   # Check if the update was successful
