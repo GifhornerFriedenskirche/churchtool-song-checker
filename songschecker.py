@@ -137,14 +137,15 @@ def main():
             # Handle tags for missing SNG files
             TAG_ID_MISSING_SNG = get_tag_id(API_URL, cookies, headers, TAG_MISSING_SNG)
             if TAG_ID_MISSING_SNG == None:
-                print(f"Tag `{TAG_MISSING_SNG}` was added with ID:{TAG_ID_MISSING_SNG = create_tag(API_URL, cookies, headers, TAG_MISSING_SNG, type='songs')}")
+                TAG_ID_MISSING_SNG = create_tag(API_URL, cookies, headers, TAG_MISSING_SNG, type='songs')
+                print(f"Tag `{TAG_MISSING_SNG}` was added with ID:{TAG_ID_MISSING_SNG}")
             for songs in json_data['data']:
                 if songs['has_sng_file'] == False:
                     add_tag_to_song(API_URL, cookies, headers, songs['id'], TAG_ID_MISSING_SNG, 'songs')
                 else:
                     # ToDo: Add check for tag and only remove it if it exists - [blocked by API](https://forum.church.tools/topic/7726/song-schema-attribut-f%C3%BCr-tags-fehlen)
                     remove_tag(API_URL, cookies, headers, songs['id'], TAG_ID_MISSING_SNG, 'songs')
-            print
+            print(f"Tags modified at {len(json_data['data'])} songs. ")
         else:
             print("Tag modification is disabled")
     
