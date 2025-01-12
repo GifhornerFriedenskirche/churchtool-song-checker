@@ -36,5 +36,6 @@ jobs:
           echo "MODIFY_TAGS=${{ vars.MODIFY_TAGS }}" >> .env
           echo "TAG_MISSING_SNG=${{ vars.TAG_MISSING_SNG }}" >> .env
           echo "TAG_LICENCE_CHECK=${{ vars.TAG_LICENCE_CHECK }}" >> .env
+          echo "TAG_VERSEORDER_CHECK=${{ vars.TAG_VERSEORDER_CHECK }}" >> .env
       - name: Run script
         run: python songschecker.py
