@@ -81,7 +81,7 @@ def add_tag_to_song(api_url, cookies, headers, song_id, tag_id, type='song'):
   Returns:
   - response (dict): The response of the request.
   """
-  response = requests.put(api_url + '/api/tags/' + type + '/' + song_id + '/' + tag_id, cookies=cookies, headers=headers)
+  response = requests.put(api_url + '/api/tags/' + type + '/' + str(song_id) + '/' + str(tag_id), cookies=cookies, headers=headers)
 
   if 'Duplicate entry' in str(response.content):
     return 200
@@ -105,5 +105,5 @@ def remove_tag(api_url, cookies, headers, object_id, tag_id, type='song'):
   Returns:
   - response (dict): The response of the request.
   """
-  response = requests.delete(api_url + '/api/tags/' + type + '/' + object_id + '/' + tag_id, cookies=cookies, headers=headers)
+  response = requests.delete(api_url + '/api/tags/' + type + '/' + str(object_id) + '/' + str(tag_id), cookies=cookies, headers=headers)
   return response
