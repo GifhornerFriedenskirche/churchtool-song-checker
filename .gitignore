@@ -11,3 +11,20 @@ __pycache__/
 # Ignore .vscode
 .vscode/
 .dev-runner.py
+
+# Testing and coverage files
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+.tox/
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# pytest temporary files
+test_main_direct.py
+temp_*.py
