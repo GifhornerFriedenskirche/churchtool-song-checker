@@ -106,4 +106,5 @@ def remove_tag(api_url, cookies, headers, object_id, tag_id, type='song'):
   - response (dict): The response of the request.
   """
   response = requests.delete(api_url + '/api/tags/' + type + '/' + str(object_id) + '/' + str(tag_id), cookies=cookies, headers=headers)
+
   return response
