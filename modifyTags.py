@@ -98,7 +98,7 @@ def remove_tag(api_url, cookies, headers, object_id, tag_id, type='song'):
   - api_url (str): The URL of the API.
   - cookies (dict): The cookies to be sent with the request.
   - headers (dict): The headers to be sent with the request.
-  - id (str): The ID of the song or the person to remove the tag from.
+  - object_id (str): The ID of the song or the person to remove the tag from.
   - tag_id (str): The ID of the tag to remove from the song.
   - type (str, optional): The type of the tag. Can be 'song' or 'person'. Defaults to 'song'.
 

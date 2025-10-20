@@ -1,9 +1,9 @@
 # ChurchTools Song Checker
 [![CodeQL](https://github.com/GifhornerFriedenskirche/churchtool-song-checker/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/GifhornerFriedenskirche/churchtool-song-checker/actions/workflows/github-code-scanning/codeql)
 
-This Python script retrieves JSON data from an ChurchTool-API, parses it, identifies songs with missing ".sng" files in their arrangements, and categorizes them accordingly. It then outputs the results to predefined ChurchTool-Wiki-Page.
+This Python script retrieves JSON data from an ChurchTool API, parses it, identifies songs with missing ".sng" files in their arrangements, and categorizes them accordingly. It then outputs the results to predefined ChurchTool Wiki Page.
 
-## ChurchTool-API
+## ChurchTool API
 Used documentation: https://churchtools.academy/de/help/system-einstellungen/api/0-api/
 
 ## Prerequisites
