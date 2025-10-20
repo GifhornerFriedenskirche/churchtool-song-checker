@@ -115,25 +115,25 @@ def main():
     # Get song data
     json_data = get_song_data(API_URL, headers, cookies)
     if json_data:
-        print(f"Successfully fetched {len(json_data['data'])} songs from the API")
+        print(f"✅ Successfully fetched {len(json_data['data'])} songs from the API")
 
         # Check for missing .sng files
         content, json_data = check_for_missing_sng_file(json_data)
-        print("Checked for missing .sng files")
+        print("🔍 Checked for missing .sng files")
     
         # Update wiki page if activated
         if UPDATE_WIKI == 'True':
-            print("Wiki update is enabled")
+            print("📖 Wiki update is ✅ enabled")
             # Todo: check if a page with the title exists
             # Todo: create page if not exists
 
-            print(f"Update wiki page {PAGE_TITLE} at category {CATEGORY} with result: {updateWiki(CATEGORY, PAGE_TITLE, content, API_URL, headers, cookies)}")
+            print(f"📝 Update wiki page {PAGE_TITLE} at category {CATEGORY} with result: {updateWiki(CATEGORY, PAGE_TITLE, content, API_URL, headers, cookies)}")
         else :
-            print("Wiki update is disabled")
+            print("📖 Wiki update is 🚫 disabled")
 
         # Modify tags if activated
         if MODIFY_TAGS == 'True':
-            print("Tag modification is enabled")
+            print("🏷️ Tag modification is ✅ enabled")
             # Handle tags for missing SNG files
             TAG_ID_MISSING_SNG = get_tag_id(API_URL, cookies, headers, TAG_MISSING_SNG)
             if TAG_ID_MISSING_SNG == None:
@@ -147,7 +147,7 @@ def main():
                     remove_tag(API_URL, cookies, headers, songs['id'], TAG_ID_MISSING_SNG, 'songs')
             print(f"Tags modified at {len(json_data['data'])} songs. ")
         else:
-            print("Tag modification is disabled")
+            print("🏷️ Tag modification is 🚫 disabled")
     
 
 if __name__ == "__main__":

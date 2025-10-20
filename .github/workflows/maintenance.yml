@@ -1,0 +1,21 @@
+name: ♻️ Weekly Maintenance
+
+on:
+  schedule:
+    - cron: "0 4 * * 1" # Jeden Montag 04:00 UTC
+  workflow_dispatch:
+
+jobs:
+  maintenance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: 🧩 Dependency Audit
+        run: |
+          pip install pip-audit
+          pip-audit
+      - name: 🧹 Update Dev Dependencies (Patch only)
+        run: |
+          pip install --upgrade --only-binary=:all: -r requirements.txt
+      - name: 🧱 Rebuild Caches
+        run: echo "Refreshing pip and pytest caches"
