@@ -1,7 +1,10 @@
 # ChurchTools Song Checker
 [![CodeQL](https://github.com/GifhornerFriedenskirche/churchtool-song-checker/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/GifhornerFriedenskirche/churchtool-song-checker/actions/workflows/github-code-scanning/codeql)
 
-This Python script retrieves JSON data from an ChurchTool-API, parses it, identifies songs with missing ".sng" files in their arrangements, and categorizes them accordingly. It then outputs the results to predefined ChurchTool-Wiki-Page.
+This Python script retrieves JSON data from an ChurchTool API, parses it, identifies songs with missing ".sng" files in their arrangements, and categorizes them accordingly. It then outputs the results to predefined ChurchTool Wiki Page.
+
+## ChurchTool API
+Used documentation: https://churchtools.academy/de/help/system-einstellungen/api/0-api/
 
 ## Prerequisites
 
@@ -33,7 +36,7 @@ Before running the script, make sure you have the following prerequisites instal
     API_URL=your_churchtools_baseurl_here
     USER_NAME=your_churchtools_username_here
     USER_PASSWORD=your_churchtools_password_here
-    
+
     # wiki related configuration
     UPDATE_WIKI=True|False # set to True if you want to update a wiki page with the status of the songs. If you want to use this, you need to create a wiki page first.
     CATEGORY=your_churchtools_wiki_category_here # id of the category where the page is located. Can be found in the URL of the wiki page.

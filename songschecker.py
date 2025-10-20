@@ -62,33 +62,33 @@ def check_for_missing_sng_file(json_data):
     """
     malicious_songs = []
     clean_songs = []
-    
+
     for song in json_data['data']:
         arrangement_counts = count_sng_files(song['arrangements'])
         has_missing_sng = any(count == 0 for count in arrangement_counts.values())
-        
+
         song_info = f"## {song['name']} - ID: [{song['id']}](https://friedenskirche-gf.church.tools/?q=churchservice#SongView/searchEntry:%23{song['id']}/)\n"
         arrangement_info = ""
         for arrangement, count in arrangement_counts.items():
             arrangement_info += f"- {arrangement}: {count} .sng file(s)\n"
-        
+
         if has_missing_sng:
             malicious_songs.append(song_info + arrangement_info)
             song['has_sng_file'] = False
         else:
             clean_songs.append(song_info + arrangement_info)
             song['has_sng_file'] = True
-    
+
     now = datetime.datetime.now().strftime('%d.%m.%y %H:%M:%S')
     wiki_content = f"# General Info\n\nThis is an automated report based on [songchecker](https://github.com/GifhornerFriedenskirche/churchtoolScripts)\nStatus of last run (date: {now}): [![check songs 🎶 and update status page 📖](https://github.com/GifhornerFriedenskirche/churchtoolScripts/actions/workflows/checkSongs.yml/badge.svg)](https://github.com/GifhornerFriedenskirche/churchtoolScripts/actions/workflows/checkSongs.yml)\n\nCurrently implemented features\n\n* Check for missing SNG files\n\n"
     wiki_content += "# Malicious Songs\n\n"
     for song in malicious_songs:
         wiki_content += song + '\n'
-        
+
     wiki_content += "\n# Clean Songs\n\n"
     for song in clean_songs:
         wiki_content += song + '\n'
-    
+
     return wiki_content, json_data
 
 def main():
@@ -120,7 +120,7 @@ def main():
         # Check for missing .sng files
         content, json_data = check_for_missing_sng_file(json_data)
         print("🔍 Checked for missing .sng files")
-    
+
         # Update wiki page if activated
         if UPDATE_WIKI == 'True':
             print("📖 Wiki update is ✅ enabled")
@@ -137,22 +137,22 @@ def main():
             # Handle tags for missing SNG files
             TAG_ID_MISSING_SNG = get_tag_id(API_URL, cookies, headers, TAG_MISSING_SNG)
             if TAG_ID_MISSING_SNG == None:
-                TAG_ID_MISSING_SNG = create_tag(API_URL, cookies, headers, TAG_MISSING_SNG, type='songs')
+                TAG_ID_MISSING_SNG = create_tag(API_URL, cookies, headers, TAG_MISSING_SNG, type='song')
                 print(f"Tag `{TAG_MISSING_SNG}` was added with ID:{TAG_ID_MISSING_SNG}")
             for songs in json_data['data']:
                 if songs['has_sng_file'] == False:
-                    add_tag_to_song(API_URL, cookies, headers, songs['id'], TAG_ID_MISSING_SNG, 'songs')
+                    add_tag_to_song(API_URL, cookies, headers, songs['id'], TAG_ID_MISSING_SNG, 'song')
                 else:
                     # ToDo: Add check for tag and only remove it if it exists - [blocked by API](https://forum.church.tools/topic/7726/song-schema-attribut-f%C3%BCr-tags-fehlen)
-                    remove_tag(API_URL, cookies, headers, songs['id'], TAG_ID_MISSING_SNG, 'songs')
+                    remove_tag(API_URL, cookies, headers, songs['id'], TAG_ID_MISSING_SNG, 'song')
             print(f"Tags modified at {len(json_data['data'])} songs. ")
         else:
             print("🏷️ Tag modification is 🚫 disabled")
-    
+
 
 if __name__ == "__main__":
     """
-    This condition checks if this script is being run directly or being imported. 
+    This condition checks if this script is being run directly or being imported.
     If it is run directly, it calls the main function.
     """
     main()
